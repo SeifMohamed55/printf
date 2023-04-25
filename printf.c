@@ -121,6 +121,12 @@ int _printf(const char *format, ...)
 						return (-1);
 					count++;
 					break;
+				case 'r':
+					str = va_arg(list, char *);
+					test = write(1, strrev(str), strlen(str));
+					if (test < 0)
+						return (-1);
+					count += strlen(str);
 				default:
 					x = '%';
 					test = write(1, &x, 1);
