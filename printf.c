@@ -2,6 +2,8 @@
 #include "main.h"
 #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
+#include <stdarg.h>
 /**
  * toString - to string
  * @s: the string
@@ -48,7 +50,6 @@ int _printf(const char *format, ...)
 		{
 			i++;
 			x = format[i];
-
 			switch (x)
 			{
 				case 'd':
