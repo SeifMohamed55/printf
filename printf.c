@@ -5,30 +5,60 @@
 #include <string.h>
 #include <stdarg.h>
 /**
- * toString - to string
+ * strrev - reverse a string
  * @s: the string
+ *
+ * Return: reversed string
+ */
+char* strrev(char *str)
+{
+	unsigned int i, j;
+	char tmp;
+
+	for (i = strlen(str) - 1, j = 0;j < strlen(str) / 2; i--, j++)
+	{
+		tmp = str[i];
+		str[i] = str[j];
+		str[j] = tmp;
+	}
+	return (str);
+}
+/**
+ * toString - to string
+ * @x: the number
  *
  * Return: str
  */
 char *toString(int x)
 {
-	char *str = malloc(12 * sizeof(char));
-	int i = 0;
-
+	char *str = malloc(14 * sizeof(char));
+	int i = 0 , bol = 0;
+	if (x < 0)
+	{
+		bol = 1;
+		x *= -1;
+	}
 	if (!str)
 	{
 		return NULL;
 	}
 	while (x)
 	{
-		str[i] = x % 10;
+		str[i] = (x % 10) + '0';
 		x = x / 10;
 		i++;
 	}
+	if (bol)
+	{
+		str[i] = '-';
+		bol = 0;
+		i++;
+	}
 	str[i] = '\0';
-	str = strrev(str);
+	strrev(str);
 	return (str);
 }
+
 /**
  * printf - prints a string
  * @format: the format of a string
@@ -40,7 +70,8 @@ int _printf(const char *format, ...)
 	va_list list;
 	char *str;
 	char x;
-	int count = 0, y, i = 0, test;
+	int y, i = 0, test;
+    unsigned int count = 0 , zo;
 	
 	va_start(list, format);
 	while (format != NULL && format[i] != '\0')
@@ -59,10 +90,11 @@ int _printf(const char *format, ...)
 					if (test < 0)
 						return (-1);
 					count += strlen(str);
+					free(str);
 					break;
 				case 'i':
-					y = va_arg(list, unsigned int);
-					str = toString(y);
+					zo = va_arg(list, unsigned int);
+					str = toString(zo);
 					test = write(1, str, strlen(str));
 					if (test < 0)
 						return (-1);
@@ -75,23 +107,40 @@ int _printf(const char *format, ...)
 						return (-1);
 					count++;
 					break;
-				case 's'
-					str = va_arg(list, char*);
+				case 's':
+					str = va_arg(list, char *);
 					test = write(1, str, strlen(str));
 					if (test < 0)
 						return (-1);
 					count += strlen(str);
 					break;
-				default:
+				case '%':
+					x = '%';
+					test = write(1, &x, 1);
+					if (test < 0)
+						return (-1);
+					count++;
 					break;
+				default:
+					x = '%';
+					test = write(1, &x, 1);
+					if (test < 0)
+						return (-1);
+					x = format[i];
+					test = write(1, &x, 1);
+					if (test < 0)
+						return (-1);
 			}
-			i++;
 		}
-		test = write(1, &x, 1);
-		if (test < 0)
-			return (-1);
-		count++;
-		i++;
+		else
+        	{
+			test = write(1, &x, 1);
+			if (test < 0)
+				return (-1);
+		}
+			count++;
+			i++;
 	}
-	return (count);
+	va_end(list);
+	return ((int)count);
 }
