@@ -128,6 +128,7 @@ int _printf(const char *format, ...)
 						return (-1);
 					x = format[i];
 					test = write(1, &x, 1);
+					count += 2;
 					if (test < 0)
 						return (-1);
 			}
@@ -135,10 +136,10 @@ int _printf(const char *format, ...)
 		else
         	{
 			test = write(1, &x, 1);
+			count++;
 			if (test < 0)
 				return (-1);
 		}
-			count++;
 			i++;
 	}
 	va_end(list);
