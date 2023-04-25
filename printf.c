@@ -127,6 +127,7 @@ int _printf(const char *format, ...)
 					if (test < 0)
 						return (-1);
 					count += strlen(str);
+					break;
 				default:
 					x = '%';
 					test = write(1, &x, 1);
