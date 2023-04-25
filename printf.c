@@ -6,7 +6,7 @@
 #include <stdarg.h>
 /**
  * strrev - reverse a string
- * @s: the string
+ * @str: the string
  *
  * Return: reversed string
  */
@@ -60,7 +60,7 @@ char *toString(int x)
 }
 
 /**
- * printf - prints a string
+ * _printf - prints a string
  * @format: the format of a string
  *
  * Return: number of bytes
