@@ -5,6 +5,16 @@
 #include <string.h>
 #include <stdarg.h>
 /**
+ * toChar - to charachter
+ * @c: the digit
+ *
+ * Return: the char
+ */
+char toChar(int d)
+{
+	return (d + '0');
+}
+/**
  * strrev - reverse a string
  * @str: the string
  *
@@ -57,6 +67,31 @@ char *toString(int x)
 	str[i] = '\0';
 	strrev(str);
 	return (str);
+}
+/**
+ * dec_to_binary - gets the number in binary
+ * @x: the decimal
+ *
+ * Return: the number in binary
+ */
+char *dec_to_binary(unsigned int x)
+{
+	char *str = malloc(70 * sizeof(char));
+	char ch;
+	int i = 0;
+
+	if (str == NULL)
+		return (NULL);
+	while (x)
+	{
+		ch = toChar(x % 2);
+		x /= 10;
+		str[i] = ch;
+		i++;
+	}
+	str[i] = '\0';
+	return (strrev(str));
+
 }
 
 /**
@@ -128,6 +163,15 @@ int _printf(const char *format, ...)
 						return (-1);
 					count += strlen(str);
 					break;
+				case 'b':
+					zo = va_arg(list, unsigned int);
+					str = dec_to_binary(zo);
+					test = write(1, str, strlen(str));
+					if (test < 0)
+						return (-1);
+					count += strlen(str);
+					break;
+
 				default:
 					x = '%';
 					test = write(1, &x, 1);
